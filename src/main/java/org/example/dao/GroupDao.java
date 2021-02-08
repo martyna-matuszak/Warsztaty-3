@@ -1,7 +1,7 @@
-package dao;
+package org.example.dao;
 
 
-import model.Group;
+import org.example.model.Group;
 
 import java.sql.*;
 import java.util.Arrays;

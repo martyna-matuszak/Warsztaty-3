@@ -1,7 +1,7 @@
-package dao;
+package org.example.dao;
 
 
-import model.Solution;
+import org.example.model.Solution;
 
 import java.sql.*;
 import java.util.Arrays;
