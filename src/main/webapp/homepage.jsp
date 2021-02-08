@@ -16,8 +16,8 @@
         <td>${solution.created}</td>
         <td>${solution.updated}</td>
         <td>${solution.description}</td>
-        <td><a href="/exercise?id=${solution.exerciseId}"> Ex. ${solution.exerciseId} </a> </td>
-        <td>${solution.userId} </td>
+        <td><a href="/exercise?id=${solution.exerciseId}"> [ex. ${solution.exerciseId}] </a> </td>
+        <td><a href="/user?id=${solution.userId}"> [user ${solution.userId}]</a> </td>
     </tr>
 </c:forEach>
 </table>
