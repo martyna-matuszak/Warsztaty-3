@@ -22,6 +22,9 @@
 </c:forEach>
 </table>
 
+<h1>Groups</h1>
+<a href="/groups">[go to groups]</a>
+
 </body>
 
 <jsp:include page="footer.jsp"/>
