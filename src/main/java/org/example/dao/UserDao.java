@@ -20,6 +20,8 @@ public class UserDao {
             "SELECT * FROM users";
     private static final String FIND_ALL_USERS_BY_GROUP_ID_QUERY =
             "SELECT * FROM users WHERE user_group_id = ?";
+    private static final String FIND_USER_BY_USERNAME_QUERY =
+            "SELECT * FROM users WHERE username = ?";
 
     public User create(User user) {
         try (Connection conn = DbUtil.getConnection()) {
@@ -47,18 +49,22 @@ public class UserDao {
             statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                User user = new User();
-                user.setId(resultSet.getInt("id"));
-                user.setUsername(resultSet.getString("username"));
-                user.setEmail(resultSet.getString("email"));
-                user.setPassword(resultSet.getString("password"));
-                user.setUserGroupId(resultSet.getInt("user_group_id"));
-                return user;
+                return getUser(resultSet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private User getUser(ResultSet resultSet) throws SQLException {
+        User user = new User();
+        user.setId(resultSet.getInt("id"));
+        user.setUsername(resultSet.getString("username"));
+        user.setEmail(resultSet.getString("email"));
+        user.setPassword(resultSet.getString("password"));
+        user.setUserGroupId(resultSet.getInt("user_group_id"));
+        return user;
     }
 
     public void update(User user) {
@@ -94,12 +100,7 @@ public class UserDao {
     private User[] createUsersArray(ResultSet resultSet) throws SQLException {
         User[] users = new User[0];
         while (resultSet.next()) {
-            User user = new User();
-            user.setId(resultSet.getInt("id"));
-            user.setUsername(resultSet.getString("username"));
-            user.setEmail(resultSet.getString("email"));
-            user.setPassword(resultSet.getString("password"));
-            user.setUserGroupId(resultSet.getInt("user_group_id"));
+            User user = getUser(resultSet);
             users = addToArray(user, users);
         }
         return users;
@@ -126,6 +127,20 @@ public class UserDao {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public User findByUsername (String username){
+        try (Connection connection = DbUtil.getConnection()){
+            PreparedStatement statement = connection.prepareStatement(FIND_USER_BY_USERNAME_QUERY);
+            statement.setString(1,username);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return getUser(resultSet);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

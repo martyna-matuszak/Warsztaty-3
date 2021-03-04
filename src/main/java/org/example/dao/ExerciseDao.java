@@ -2,6 +2,7 @@ package org.example.dao;
 
 
 import org.example.model.Exercise;
+import org.example.model.Solution;
 
 import java.sql.*;
 import java.util.Arrays;
@@ -98,4 +99,44 @@ public class ExerciseDao {
         } catch (SQLException e) {
             e.printStackTrace(); return null;
         }}
+
+    public Exercise[] allSolvedExercisesByUser(int userId){
+        SolutionDao solutionDao = new SolutionDao();
+        Solution[] allUsersSolutions = solutionDao.findAllByUserId(userId);
+
+        Exercise[] allExercises = findAll();
+
+        Exercise[] allSolvedExercises = new Exercise[0];
+        for (Exercise exercise : allExercises) {
+            for (Solution solution : allUsersSolutions) {
+                if (exercise.getId() == solution.getExerciseId()) {
+                    allSolvedExercises = addToArray(exercise, allSolvedExercises);
+                }
+            }
+        }
+
+        return allSolvedExercises;
+    }
+
+    public Exercise[] allUnsolvedExercisesByUser(int userId) {
+
+        Exercise[] allSolvedExercises = allSolvedExercisesByUser(userId);
+        Exercise[] allExercises = findAll();
+        Exercise[] allUnsolvedExercise = new Exercise[0];
+
+        for (Exercise allEx : allExercises) {
+            boolean isItSolved = false;
+            for (Exercise solEx : allSolvedExercises) {
+                if (allEx.getId() == solEx.getId()) {
+                    isItSolved = true;
+                    break;
+                }
+            }
+            if (!isItSolved) {
+                allUnsolvedExercise = addToArray(allEx, allUnsolvedExercise);
+            }
+        }
+
+        return allUnsolvedExercise;
+    }
 }

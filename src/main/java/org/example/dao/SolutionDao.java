@@ -1,6 +1,7 @@
 package org.example.dao;
 
 
+import org.example.model.Exercise;
 import org.example.model.Solution;
 
 import java.sql.*;
@@ -160,6 +161,18 @@ public class SolutionDao {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public String[][] getSolutionsWithExerciseDetails (Solution[] solutions){
+        String[][] solutionsWithExercises = new String[solutions.length][5];
+        ExerciseDao exerciseDao = new ExerciseDao();
+        for(int i=0; i<solutions.length; i++){
+            Solution solution = solutions[i];
+            Exercise exercise = exerciseDao.read(solution.getExerciseId());
+            String[] singleLine = {solution.getCreated(), solution.getUpdated(), solution.getDescription(), exercise.getTitle(), exercise.getDescription()};
+            solutionsWithExercises[i] = singleLine;
+        }
+        return solutionsWithExercises;
     }
 
 }
