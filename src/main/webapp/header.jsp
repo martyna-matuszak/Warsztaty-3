@@ -3,8 +3,8 @@
 <head>
     <title>JavaEE - School</title>
     <a href="/">[Home]</a>
-    <a href="/adminPanel">[Admin]</a>
-    <a href="/userPanel">[User]</a>
+    <a href="/adminPanel">[Admin Panel]</a>
+    <a href="/userPanel">[User Panel]</a>
 
 </head>
 
