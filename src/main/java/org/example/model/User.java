@@ -8,12 +8,14 @@ public class User {
     private String email;
     private String password;
     private int userGroupId;
+    private String role;
 
-    public User(String username, String email, String password, int userGroupId){
+    public User(String username, String email, String password, int userGroupId, String role){
         this.username = username;
         this.email = email;
         this.hashPassword(password);
         this.userGroupId = userGroupId;
+        this.role = role;
     }
 
     public User(){}
@@ -62,9 +64,17 @@ public class User {
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
-        return "ID: " + this.id + ", username: " + this.username + ", email: " + this.email + ", group id: " + this.userGroupId;
+        return "ID: " + this.id + ", username: " + this.username + ", email: " + this.email + ", group id: " + this.userGroupId + ", role: " + this.getRole();
     }
 
     @Override public boolean equals(Object o) {

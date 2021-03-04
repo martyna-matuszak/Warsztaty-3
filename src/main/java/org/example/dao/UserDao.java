@@ -9,11 +9,11 @@ import java.util.Arrays;
 public class UserDao {
 
     private static final String CREATE_USER_QUERY =
-            "INSERT INTO users(username, email, password, user_group_id) VALUES (?, ?, ?, ?)";
+            "INSERT INTO users(username, email, password, user_group_id, role) VALUES (?, ?, ?, ?, ?)";
     private static final String READ_USER_QUERY =
             "SELECT * FROM users where id = ?";
     private static final String UPDATE_USER_QUERY =
-            "UPDATE users SET username = ?, email = ?, password = ?, user_group_id = ? where id = ?";
+            "UPDATE users SET username = ?, email = ?, password = ?, user_group_id = ?, role = ? where id = ?";
     private static final String DELETE_USER_QUERY =
             "DELETE FROM users WHERE id = ?";
     private static final String FIND_ALL_USERS_QUERY =
@@ -27,10 +27,7 @@ public class UserDao {
         try (Connection conn = DbUtil.getConnection()) {
             PreparedStatement statement =
                     conn.prepareStatement(CREATE_USER_QUERY, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getEmail());
-            statement.setString(3, user.getPassword());
-            statement.setInt(4, user.getUserGroupId());
+            prepareUserStatement(user, statement);
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -64,17 +61,23 @@ public class UserDao {
         user.setEmail(resultSet.getString("email"));
         user.setPassword(resultSet.getString("password"));
         user.setUserGroupId(resultSet.getInt("user_group_id"));
+        user.setRole(resultSet.getString("role"));
         return user;
+    }
+
+    private void prepareUserStatement(User user, PreparedStatement statement) throws SQLException {
+        statement.setString(1, user.getUsername());
+        statement.setString(2, user.getEmail());
+        statement.setString(3, user.getPassword());
+        statement.setInt(4, user.getUserGroupId());
+        statement.setString(5, user.getRole());
     }
 
     public void update(User user) {
         try (Connection conn = DbUtil.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(UPDATE_USER_QUERY);
-            statement.setString(1, user.getUsername());
-            statement.setString(2, user.getEmail());
-            statement.setString(3, user.getPassword());
-            statement.setInt(4, user.getUserGroupId());
-            statement.setInt(5, user.getId());
+            prepareUserStatement(user,statement);
+            statement.setInt(6, user.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
