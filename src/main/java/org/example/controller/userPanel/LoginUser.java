@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LoginUser {
 
@@ -28,9 +30,9 @@ public class LoginUser {
         if(loggedUser){
             response.sendRedirect(request.getParameter("redirect"));
         } else {
-            request.setAttribute("login", "Wrong username or password");
+            request.setAttribute("loginMessage", "Wrong username or password. Try again.");
 
-            request.getServletContext().getRequestDispatcher("/userPanel")
+            request.getServletContext().getRequestDispatcher("/userPanel/userHome.jsp")
                     .forward(request, response);
         }
 
@@ -38,9 +40,12 @@ public class LoginUser {
 
     public static void loginByUsername (HttpServletRequest request, HttpServletResponse response, String username, String password) throws IOException, ServletException {
         UserDao userDao = new UserDao();
-        User user = userDao.findByUsername(username);
-        redirectingAfterLogin(request,response,login(request,user,password));
+        Optional<User> userOptional = Optional.ofNullable(userDao.findByUsername(username));
+        AtomicBoolean login = new AtomicBoolean(false);
+        userOptional.ifPresent(user -> login.set(login(request, user, password)));
+        redirectingAfterLogin(request,response,login.get());
     }
+
 
     public static boolean loginBySession (HttpServletRequest request){
         HttpSession session = request.getSession();
