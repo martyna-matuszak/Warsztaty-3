@@ -3,7 +3,7 @@
 
 <html>
 
-<jsp:include page="userHeader.jsp"/>
+<jsp:include page="/header.jsp"/>
 
 <body>
 <h1>User panel </h1>

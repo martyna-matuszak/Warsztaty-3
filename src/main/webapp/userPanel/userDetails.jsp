@@ -14,28 +14,18 @@ Group: <c:out value="${group.name}"/> <br>
 
 <h1>User's solutions: </h1>
 
-<%--<table>--%>
-<%--    <tr><th>Created</th> <th>Updated</th> <th>Description</th> <th>Exercise</th></tr>--%>
-<%--    <c:forEach items="${solutions}" var="solution">--%>
-<%--        <tr>--%>
-<%--            <td>${solution.created}</td>--%>
-<%--            <td>${solution.updated}</td>--%>
-<%--            <td>${solution.description}</td>--%>
-<%--            <td><a href="/exercise?id=${solution.exerciseId}"> [ex. ${solution.exerciseId}] </a> </td>--%>
-<%--        </tr>--%>
-<%--    </c:forEach>--%>
-<%--</table>--%>
-
 <table>
-    <tr><th>Created</th> <th>Updated</th> <th>Solution description</th> <th>Exercise title</th> <th>Exercise description</th></tr>
+    <tr><th>Created</th> <th>Updated</th> <th>Solution description</th> <th>Exercise title</th> <th>Exercise description</th> <th>Grade</th></tr>
     <c:forEach items="${solutionsExercises}" var="solution">
         <tr>
             <c:forEach items="${solution}" var="item">
-            <td>${item}</td>
+                <td>${item}</td>
             </c:forEach>
         </tr>
     </c:forEach>
 </table>
+
+<h2> GPA: ${gpa}</h2>
 
  <h1> All unsolved exercises:</h1>
 <table>

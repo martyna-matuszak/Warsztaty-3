@@ -30,13 +30,15 @@ public class UserDetailsServlet extends HttpServlet {
 
         SolutionDao solutionDao = new SolutionDao();
         Solution[] solutions = solutionDao.findAllByUserId(userId);
-//        request.setAttribute("solutions", solutions);
 
         String[][] solutionsWithExerciseDetails = solutionDao.getSolutionsWithExerciseDetails(solutions);
         request.setAttribute("solutionsExercises", solutionsWithExerciseDetails);
 
         ExerciseDao exerciseDao = new ExerciseDao();
         request.setAttribute("exercises", exerciseDao.allUnsolvedExercisesByUser(userId));
+
+        double gpa = solutionDao.getGpa(userId);
+        request.setAttribute("gpa", gpa);
 
         getServletContext().getRequestDispatcher("/userPanel/userDetails.jsp")
                 .forward(request, response);

@@ -25,6 +25,8 @@ public class SolutionDao {
             "SELECT * FROM solutions WHERE exercise_id = ? ORDER BY created DESC";
     private static final String FIND_RECENT_SOLUTIONS_QUERY =
             "SELECT * FROM solutions ORDER BY created desc LIMIT ?";
+    private static final String GET_GPA_QUERY =
+            "SELECT AVG(grade) FROM solutions WHERE user_id = ?";
 
     public Solution create(Solution solution) {
         try (Connection conn = DbUtil.getConnection()) {
@@ -150,15 +152,34 @@ public class SolutionDao {
     }
 
     public String[][] getSolutionsWithExerciseDetails (Solution[] solutions){
-        String[][] solutionsWithExercises = new String[solutions.length][5];
+        String[][] solutionsWithExercises = new String[solutions.length][6];
         ExerciseDao exerciseDao = new ExerciseDao();
         for(int i=0; i<solutions.length; i++){
             Solution solution = solutions[i];
             Exercise exercise = exerciseDao.read(solution.getExerciseId());
-            String[] singleLine = {solution.getCreated(), solution.getUpdated(), solution.getDescription(), exercise.getTitle(), exercise.getDescription()};
+            String grade;
+            if(solution.getGrade() == 0.0){
+                grade = "none";
+            } else {
+                grade = String.valueOf(solution.getGrade());
+            }
+            String[] singleLine = {solution.getCreated(), solution.getUpdated(), solution.getDescription(), exercise.getTitle(), exercise.getDescription(), grade};
             solutionsWithExercises[i] = singleLine;
         }
         return solutionsWithExercises;
     }
 
+    public Double getGpa(int userId){
+        try (Connection conn = DbUtil.getConnection()) {
+            PreparedStatement statement = conn.prepareStatement(GET_GPA_QUERY);
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getDouble("AVG(grade)");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0.0;
+    }
 }
