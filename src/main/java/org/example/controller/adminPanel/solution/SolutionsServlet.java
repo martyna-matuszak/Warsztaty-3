@@ -18,6 +18,10 @@ import java.io.IOException;
 public class SolutionsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        SolutionDao solutionDao = new SolutionDao();
+        Solution[] solutions = solutionDao.findAllUngraded();
+        request.setAttribute("solutions", solutions);
+
         UserDao userDao = new UserDao();
         User[] users = userDao.findAll();
         request.setAttribute("users", users);

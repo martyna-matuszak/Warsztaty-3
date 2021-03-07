@@ -27,6 +27,8 @@ public class SolutionDao {
             "SELECT * FROM solutions ORDER BY created desc LIMIT ?";
     private static final String GET_GPA_QUERY =
             "SELECT AVG(grade) FROM solutions WHERE user_id = ?";
+    private static final String FIND_ALL_UNGRADED_SOLUTIONS_QUERY =
+            "SELECT * FROM solutions WHERE grade is null";
 
     public Solution create(Solution solution) {
         try (Connection conn = DbUtil.getConnection()) {
@@ -116,15 +118,23 @@ public class SolutionDao {
         return solutions;
     }
 
-    public Solution[] findAll() {
+    private Solution[] findSolutions(String query){
         try (Connection conn = DbUtil.getConnection()) {
-            PreparedStatement statement = conn.prepareStatement(FIND_ALL_SOLUTIONS_QUERY);
+            PreparedStatement statement = conn.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             return createSolutionsArray(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public Solution[] findAll() {
+        return findSolutions(FIND_ALL_SOLUTIONS_QUERY);
+    }
+
+    public Solution[] findAllUngraded(){
+        return findSolutions(FIND_ALL_UNGRADED_SOLUTIONS_QUERY);
     }
 
     private Solution[] findSolutions (String query, int parameter){
