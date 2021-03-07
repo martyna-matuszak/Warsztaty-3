@@ -8,13 +8,15 @@ public class Solution{
     private String description;
     private int exerciseId;
     private int userId;
+    private double grade;
 
-    public Solution (String created, String updated, String description, int exerciseId, int userId){
+    public Solution (String created, String updated, String description, int exerciseId, int userId, double grade){
         this.created = created;
         this.updated = updated;
         this.description = description;
         this.exerciseId = exerciseId;
         this.userId = userId;
+        this.grade = grade;
     }
 
     public Solution() {}
@@ -67,6 +69,14 @@ public class Solution{
         this.userId = userId;
     }
 
+    public double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(double grade) {
+        this.grade = grade;
+    }
+
     @Override
     public String toString() {
         return "ID: " + id
@@ -74,6 +84,7 @@ public class Solution{
                 + ", updated: " + updated
                 + ", description: " + description
                 + ", exercise id: " + exerciseId
-                + ", user_id: " + userId;
+                + ", user_id: " + userId
+                + ", grade: " + grade;
     }
 }
