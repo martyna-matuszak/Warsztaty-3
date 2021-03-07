@@ -3,21 +3,41 @@
 
 <html>
 
-<jsp:include page="adminHeader.jsp"/>
+<jsp:include page="/header.jsp"/>
 
 <body>
-<h1>Here is the admin panel </h1>
+<h1>Admin panel </h1>
 
-Above you can choose:
+If your account has admin access, then after login:
 <ul>
-    <li>Groups - you can see all groups there, add, edit and delete them if necessary</li>
-    <li>Users - you can see all users there, add, edit and delete them if necessary</li>
-    <li>Exercises - you can see all exercises there, add, edit and delete them if necessary</li>
-    <li>Solutions - you can grade the solutions here</li>
+    <li>you can see all groups there, add, edit and delete them if necessary</li>
+    <li>you can see all users there, add, edit and delete them if necessary</li>
+    <li>you can see all exercises there, add, edit and delete them if necessary</li>
+    <li>you can grade the solutions here</li>
 </ul>
 
 
+<c:choose>
+    <c:when test="${redirect != null}">
+        <c:set var = "url" scope = "session" value = "${redirect}"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var = "salary" scope = "session" value = "/adminPanel"/>
+    </c:otherwise>
+</c:choose>
+
+<br>
+<h2><c:out value="${loginMessage}"/> </h2>
+<form action="/adminLogin" method="POST">
+    <label> Username:
+        <input type="text" name="username">
+    </label><br>
+    <label> Password:
+        <input type="password" name="password">
+    </label> <br>
+    <input type="hidden" name="redirect" value="${url}">
+    <input type="submit">
+</form>
 
 </body>
-
 </html>
