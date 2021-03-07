@@ -8,6 +8,7 @@
     <a href="/adminPanel/user">[Users]</a>
     <a href="/adminPanel/exercise">[Exercises]</a>
     <a href="/adminPanel/solution">[Solutions]</a>
+    <a href="/adminPanel/logout">[Logout]</a>
 </head>
 
 </html>
