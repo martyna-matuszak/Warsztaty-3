@@ -1,4 +1,4 @@
-#Workshops - Servlets & JSP
+# Workshops - Servlets & JSP
 
 Before running this project it is necessary to:
 1. Add JDBC Connector to dependencies - you can download it here: 
