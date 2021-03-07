@@ -22,7 +22,7 @@ If your account has admin access, then after login:
         <c:set var = "url" scope = "session" value = "${redirect}"/>
     </c:when>
     <c:otherwise>
-        <c:set var = "salary" scope = "session" value = "/adminPanel"/>
+        <c:set var = "url" scope = "session" value = "/adminPanel"/>
     </c:otherwise>
 </c:choose>
 
